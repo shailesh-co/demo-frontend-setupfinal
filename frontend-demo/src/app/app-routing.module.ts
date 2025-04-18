@@ -5,7 +5,13 @@ import { LoginComponent } from './login/login.component';
 
 const routes: Routes = [
   {path:'signup', component:SignupComponent},
-  {path:'login', component:LoginComponent}
+  {path:'login', component:LoginComponent},
+  {
+    path:'user',loadChildren:()=>import('./user-dashboard/user-dashboard.module').then((m)=>m.UserDashboardModule)
+  },
+  {
+    path:'admin', loadChildren:()=>import('./admin-dashboard/admin-dashboard.module').then((m)=>m.AdminDashboardModule)
+  }
 ];
 
 @NgModule({
