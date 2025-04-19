@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { AuthService } from '../auth.service';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-login',
@@ -9,7 +10,7 @@ import { AuthService } from '../auth.service';
 })
 export class LoginComponent implements OnInit {
   logiform! : FormGroup
-  constructor(private fb:FormBuilder ,private authser:AuthService) { 
+  constructor(private fb:FormBuilder ,private authser:AuthService, private router:Router) { 
     this.logiform= this.fb.group({
       email:['',Validators.required],
       password:['',Validators.required]
@@ -20,9 +21,15 @@ export class LoginComponent implements OnInit {
   }
   logiData(){
   const data=  this.logiform.value;
-    console.log(this.logiform.value);
-    this.authser.LoginUser(data).subscribe((res)=>{
-      console.log("I M herre",res)
+    this.authser.LoginUser(data).subscribe((res:any)=>{
+      console.log(res)
+      localStorage.setItem('token', res?.body.token);
+      localStorage.setItem('role', res?.body.role);
+      if (res?.body.role === 'admin') {
+        this.router.navigate(['/admin']);
+      } else {
+        this.router.navigate(['/user']);
+      }
     })
   }
 

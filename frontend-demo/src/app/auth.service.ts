@@ -12,6 +12,7 @@ export class AuthService {
   LoginUser(data: any): Observable<HttpResponse<any>> {
     return this.http.post<any>(`${this.url}login`, data, { observe: 'response' }).pipe(
       tap((res) => {
+        console.log("res",res)
         const token = res.body?.token; // ✅ this is the correct way
         if (token) {
           console.log("✅ Token received, storing in localStorage");
